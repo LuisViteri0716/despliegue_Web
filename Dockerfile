@@ -1,11 +1,13 @@
 # Usa una imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# Instala extensiones necesarias, como soporte para PostgreSQL
-RUN docker-php-ext-install pdo pdo_pgsql
+# Instala dependencias necesarias del sistema y extensiones de PHP
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Copia todo el código del proyecto a la carpeta de Apache en el contenedor
+# Copia todo el código al contenedor
 COPY . /var/www/html/
 
-# Da permisos adecuados
+# Da permisos adecuados (opcional pero recomendado)
 RUN chown -R www-data:www-data /var/www/html
